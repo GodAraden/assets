@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "composite": true,
+
+    // resolve
+    "rootDir": "./",
+    "incremental": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "useDefineForClassFields": true,
+    "allowSyntheticDefaultImports": true,
+
+    // output
+    "noEmit": true,
+    "sourceMap": false,
+    "diagnostics": false,
+    "removeComments": true,
+    "allowImportingTsExtensions": true
+  },
+  "exclude": ["**/node_modules", "dist"],
+  "include": ["client/**/*.vue", "client/**/*.ts", "server/**/*.ts"],
+  "files": ["./vite.config.ts", "./env.ts"]
+}

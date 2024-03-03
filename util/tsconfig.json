@@ -1,0 +1,12 @@
+{
+  "ts-node": {
+    "compilerOptions": {
+      "module": "commonjs"
+    }
+  },
+  "compilerOptions": {
+    "module": "esnext"
+  },
+  "include": ["./*.ts"],
+  "extends": "../tsconfig.json"
+}

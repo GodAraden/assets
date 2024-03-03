@@ -1,0 +1,17 @@
+# Logs
+logs
+*.log
+pnpm-debug.log*
+
+# local
+**/tsconfig.tsbuildinfo
+assets
+node_modules
+*.local
+dist
+env.ts
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json

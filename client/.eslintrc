@@ -1,0 +1,14 @@
+{
+  "parser": "vue-eslint-parser",
+  "env": {
+    "browser": true
+  },
+  "extends": [
+    "../.eslintrc",
+    "plugin:vue/essential",
+    "@vue/typescript/recommended"
+  ],
+  "rules": {
+    "vue/no-multiple-template-root": "off"
+  }
+}

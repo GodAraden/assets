@@ -1,0 +1,5 @@
+pnpm-lock.yaml
+.eslintrc
+./**/node_modules/
+./**/*.svg
+./**/*.md

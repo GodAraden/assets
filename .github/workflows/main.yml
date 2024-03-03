@@ -1,0 +1,43 @@
+name: build and deploy # workflow 名称
+on:
+  push: # push 事件触发
+    branches: [master] # 只在 master 分支有新的 push 情况下触发
+
+env:
+  TARGET_DIR: /www/wwwroot/ # 打包好的项目目录上传位置
+  PROJECT_DIR: assets # 项目目录名
+  NODE_VERSION: 18
+  PNPM_VERSION: 8
+  REMOTE_HOST: 47.94.101.247
+  REMOTE_USER: root
+
+jobs:
+  build-and-deploy: # job 名称
+    runs-on: ubuntu-latest # 执行 workflow 所需的操作系统环境
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3 # 使用切换分支的 action 操作
+
+      - name: deploy prepare # Github Action 虚拟机上的操作
+        run: |
+          rm -rf .git .github .vscode util
+          echo "import { join } from 'path';" | cat >> env.ts
+          echo "export const key = '${{secrets.UPLOAD_KEY }}';" | cat >> env.ts
+          echo "export const domain = 'https://assets.araden.top/';" | cat >> env.ts
+          echo "export const root = ${{env.TARGET_DIR}}${{env.PROJECT_DIR}}" | cat >> env.ts
+          echo "export const assetsPath = join(root, 'assets');" | cat >> env.ts
+
+      - name: deploy
+        uses: easingthemes/ssh-deploy@main # 使用 ssh 上传文件的 action 操作
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }} # ssh 密钥对中的私钥
+          REMOTE_HOST: ${{ env.REMOTE_HOST  }} # 服务器主机 ip
+          REMOTE_USER: ${{ env.REMOTE_USER }} # 服务器用户名
+          SOURCE: './' # 要进行上传的文件目录
+          TARGET: ${{ env.TARGET_DIR }} # 要进行部署的生产环境目录
+          ARGS: '-rltgoDzvO'
+          SCRIPT_AFTER: | # 上传后的操作：安装依赖，打包构建，重启项目
+            cd ${{ env.TARGET_DIR }}${{ env.PROJECT_DIR }}
+            pnpm i
+            pnpm build
+            pm2 reload all
